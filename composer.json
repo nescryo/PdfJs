@@ -1,5 +1,6 @@
 {
     "name": "leconfe/pdf-js",
+    "description": "PDF.js viewer plugin for Leconfe (Laravel 13 compatible).",
     "autoload": {
         "psr-4": {
             "PdfJs\\": "src/"
@@ -10,5 +11,7 @@
             "name": "Leconfe"
         }
     ],
-    "require": {}
+    "require": {
+        "php": "^8.2 || ^8.3 || ^8.4"
+    }
 }
