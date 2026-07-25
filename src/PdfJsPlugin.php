@@ -10,7 +10,15 @@ class PdfJsPlugin extends Plugin
     public function boot()
     {
         Hook::add('Frontend::PaperGalley', function ($hookName, $galley, &$returner) {
-            if (! $galley || ! method_exists($galley, 'isPdf') || ! $galley->isPdf()) {
+            if (! $galley) {
+                return;
+            }
+
+            $isPdf = method_exists($galley, 'isPdf')
+                ? $galley->isPdf()
+                : (\Illuminate\Support\Str::endsWith(strtolower($galley->file_name ?? $galley->label ?? ''), '.pdf') || (($galley->file ?? $galley->submissionFile ?? null)?->media?->mime_type ?? '') === 'application/pdf');
+
+            if (! $isPdf) {
                 return;
             }
 
@@ -20,9 +28,11 @@ class PdfJsPlugin extends Plugin
                 return;
             }
 
+            $enumPublished = class_exists('App\Enums\SubmissionStatus') ? \App\Enums\SubmissionStatus::Published : 3;
+
             $isPublished = method_exists($submission, 'isPublished')
                 ? $submission->isPublished()
-                : in_array(data_get($submission, 'status'), [3, 'published', 'Published', \App\Enums\SubmissionStatus::Published ?? null], true);
+                : in_array(data_get($submission, 'status'), [3, '3', 'published', 'Published', $enumPublished], false);
 
             if (! $isPublished) {
                 return;
