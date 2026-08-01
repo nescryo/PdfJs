@@ -1,10 +1,7 @@
 <?php
 
-if (file_exists(__DIR__ . '/vendor/autoload.php')) {
-    require_once __DIR__ . '/vendor/autoload.php';
-}
-
 use PdfJs\PdfJsPlugin;
 
-return new PdfJsPlugin;
+require __DIR__ . '/vendor/autoload.php';
 
+return new PdfJsPlugin;
